@@ -1,9 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-const port = import.meta.env.VITE_BACKEND_PORT;
-const backendUrl = `http://vps.latelier22.fr:${port}`;
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-console.log(backendUrl); // Ceci affichera "http://localhost:3210"
+console.log(backendUrl);
 
 const ChatContext = createContext();
 
