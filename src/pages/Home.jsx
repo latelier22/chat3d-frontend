@@ -10,7 +10,7 @@ function Home() {
 
   return (
     <>
-      <Loader />
+      {/* <Loader /> */}
       <Leva hidden/>
       <UI />
       <div style={{ height: "100vh", width: "100vw" }}>

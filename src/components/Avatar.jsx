@@ -8,6 +8,8 @@ import { useFrame } from "@react-three/fiber";
 import { button, useControls } from "leva";
 import React, { useEffect, useRef, useState } from "react";
 
+import useImageStore from "../hooks/useImageStore"; // Importer votre hook Zustand
+
 import * as THREE from "three";
 import { useChat } from "../hooks/useChat";
 
@@ -107,6 +109,11 @@ const corresponding = {
 let setupMode = false;
 
 export function Avatar(props) {
+
+  const imageUrl = useImageStore((state) => state.imageUrl); // Récupérer l'URL de l'image depuis le store
+
+  const [texture, setTexture] = useState(null);
+  
   const { nodes, materials, scene } = useGLTF(
     "/models/64f1a714fe61576b46f27ca2.glb"
   );
@@ -115,6 +122,28 @@ export function Avatar(props) {
 
   const [lipsync, setLipsync] = useState();
 
+
+  // const loader = new THREE.TextureLoader();
+  // loader.load("http://localhost:3210/textures/2682576812b3790114b12310135a3e89.png", (loadedTexture) => {
+  //   setTexture(loadedTexture);
+  //   materials.Wolf3D_Outfit_Top.map = loadedTexture;
+  //   materials.Wolf3D_Outfit_Top.needsUpdate = true;
+  // });
+
+
+  useEffect(() => {
+    if (imageUrl) {
+      const loader = new THREE.TextureLoader();
+      loader.load(imageUrl, (loadedTexture) => {
+        setTexture(loadedTexture);
+        materials.Wolf3D_Outfit_Top.map = loadedTexture;
+        materials.Wolf3D_Outfit_Top.needsUpdate = true;
+      });
+    }
+  }, [imageUrl, materials.Wolf3D_Outfit_Top]);
+
+
+  
   useEffect(() => {
     console.log(message);
     if (!message) {
