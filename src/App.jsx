@@ -1,19 +1,18 @@
-import { Loader } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { Leva } from "leva";
-import { Experience } from "./components/Experience";
-import { UI } from "./components/UI";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import AvatarPage from "./pages/Home";
+import CubePage from "./pages/Cube";
 
 function App() {
   return (
-    <>
-      <Loader />
-      <Leva  />
-      <UI />
-      <Canvas shadows camera={{ position: [0, 0, 1], fov: 30 }}>
-        <Experience />
-      </Canvas>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="/" element={<AvatarPage />} />
+          <Route path="cube" element={<CubePage />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
