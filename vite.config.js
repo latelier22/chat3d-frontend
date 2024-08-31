@@ -3,8 +3,13 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  esbuild: {
+    // Disables warning about eval()
+    legalComments: 'none'
+  },
   build: {
-    chunkSizeWarningLimit: 100,
+    target: 'es2018',
+    chunkSizeWarningLimit: 2000,
     rollupOptions: {
       onwarn(warning, warn) {
         if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
