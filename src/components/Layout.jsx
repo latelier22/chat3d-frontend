@@ -15,6 +15,16 @@ const Layout = () => {
               Cube
             </Link>
           </li>
+          <li>
+            <Link to="/google" className="hover:underline">
+              Google
+            </Link>
+          </li>
+          <li>
+            <Link to="/coque" className="hover:underline">
+              Coque
+            </Link>
+          </li>
         </ul>
       </nav>
       <main className="p-4">
