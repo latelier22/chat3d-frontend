@@ -56,7 +56,7 @@ devDependencies:
     specifier: ^3.3.3
     version: 3.4.10
   vite:
-    specifier: ^4.1.0
+    specifier: ^4.5.3
     version: 4.5.3
 
 packages:
