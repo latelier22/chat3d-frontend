@@ -38,8 +38,8 @@ const ImageSearchPage = () => {
   };
 
   return (
-    <div style={{ height: "100vh", width: "100vw" }} className='flex'>
-    <div>
+    <div style={{ height: "100vh", width: "100vw" }} className='flex flex-col'>
+    <div className='h-full md:h-1/3'>
       <h1>Image Search</h1>
       <input
         type="text"
@@ -49,31 +49,34 @@ const ImageSearchPage = () => {
       />
       <button onClick={handleSearch}>Search</button>
 
-      <div style={{ marginTop: '20px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+      <div className="justify-between mr-8" style={{ marginTop: '20px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
         {images.map((imageUrl, index) => (
           <div
             key={index}
             onClick={() => handleSelectImage(imageUrl)}
-            style={{ cursor: 'pointer', width: '150px', height: '150px', backgroundImage: `url(${imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+            style={{ cursor: 'pointer', backgroundImage: `url(${imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+            className='w-24 h-24 md:w-56 md:h-56'
           ></div>
         ))}
       </div>
-
+{/* 
       {imageUrl && (
         <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc' }}>
           <h2>Selected Image:</h2>
           <img src={imageUrl} alt="Selected" style={{ maxWidth: '100%', height: 'auto' }} />
           <p>Image URL: {imageUrl}</p>
         </div>
-      )}
+      )} */}
     
     </div>
+    <div style={{ height: "50vh", width: "100vw" }}>
 <Canvas shadows camera={{ position: [2, 0, 5], fov: 50 }}>
   <Environment preset="sunset" />
   <OrbitControls />
   
   <CoqueIP12 position={[0, 0, 0]} rotation={[Math.PI/2, 0, 0]} scale={15}/>
 </Canvas>
+</div>
 </div>
    
   );
