@@ -24,7 +24,7 @@ export const UI = ({ hidden, ...props }) => {
   return (
     <>
       <div className="fixed top-0 left-0 right-0 bottom-0 z-10 flex justify-between p-4 flex-col pointer-events-none">
-        <div className="self-start backdrop-blur-md bg-white bg-opacity-50 p-4 rounded-lg">
+        <div className="self-start backdrop-blur-md bg-white bg-opacity-50 p-4 rounded-lg w-2/3">
           <h1 className="font-black text-xl">My Avatar</h1>
           <p>Ask what you want or describe an image to generate it!</p>
         </div>
