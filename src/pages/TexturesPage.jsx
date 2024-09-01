@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useTextureStore from '../hooks/useTextureStore';
 import axios from 'axios';
 import { Avatar } from '../components/AvatarTextures';
@@ -12,10 +12,12 @@ const TexturesPage = () => {
     images,
     textures,
     selectedTexture,
+    selectMode,
     setIsSearching,
     setImages,
     setSelectedTexture,
     setModelTexture,
+    setSelectMode,
   } = useTextureStore(state => state);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -40,20 +42,31 @@ const TexturesPage = () => {
     try {
       const response = await axios.post(`${backendUrl}/downloadImage`, { imageUrl });
       const absoluteImageUrl = `${backendUrl}${response.data.imagePath}`;
-      setModelTexture(selectedTexture, absoluteImageUrl); // Appliquer la texture au matériau sélectionné
+      setModelTexture(selectedTexture, absoluteImageUrl);
     } catch (error) {
       console.error('Error downloading image:', error);
     }
   };
 
-  // Utilisation de Leva pour sélectionner une texture
-  useControls({
+  // Synchronize Leva control with selectedTexture
+  const [controls, set] = useControls(() => ({
     Texture: {
       value: selectedTexture || '',
       options: textures,
       onChange: (value) => setSelectedTexture(value),
     },
-  }, [textures]);
+    SelectMode: {
+      value: selectMode,
+      onChange: (value) => setSelectMode(value),
+    },
+  }), [textures, selectedTexture]);
+
+  // Synchronize Leva's `Texture` value with `selectedTexture`
+  useEffect(() => {
+    if (controls.Texture !== selectedTexture) {
+      set({ Texture: selectedTexture });
+    }
+  }, [selectedTexture, controls.Texture, set]);
 
   return (
     <div style={{ height: "100vh", width: "100vw" }} className='flex'>

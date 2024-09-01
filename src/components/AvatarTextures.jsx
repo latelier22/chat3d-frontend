@@ -101,17 +101,26 @@ const corresponding = {
 let setupMode = false;
 
 export function Avatar(props) {
- 
-  const { nodes, materials} = useGLTF("/models/64f1a714fe61576b46f27ca2.glb");
+
   const group = useRef();
   const textures = useTextureStore((state) => state.modelTextures);
   const setTextures = useTextureStore((state) => state.setTextures);
-  
+  const selectedTexture = useTextureStore((state) => state.selectedTexture);
+  const hoveredTexture = useTextureStore((state) => state.hoveredTexture);
+  const selectMode = useTextureStore((state) => state.selectMode);
+  const setHoveredTexture = useTextureStore((state) => state.setHoveredTexture);
+  const setSelectedTexture = useTextureStore((state) => state.setSelectedTexture);
+  const { nodes, materials } = useGLTF("/models/64f1a714fe61576b46f27ca2.glb");
 
   useEffect(() => {
+    // Récupérer tous les noms des matériaux disponibles
     const availableTextures = Object.keys(materials);
+    console.log('Textures disponibles:', availableTextures);
+
+    // Mettre à jour les textures dans le store une fois pour toutes
     setTextures(availableTextures);
 
+    // Appliquer les textures déjà stockées (le cas échéant)
     Object.entries(textures).forEach(([textureName, url]) => {
       const material = materials[textureName];
       if (material) {
@@ -122,10 +131,59 @@ export function Avatar(props) {
         });
       }
     });
-  }, [textures, materials, setTextures]);
+  }, [materials, setTextures, textures]);
+
+  useFrame(() => {
+    Object.keys(materials).forEach((name) => {
+      if (selectMode) {
+        if (name === hoveredTexture) {
+          // Le matériau survolé devient un peu lumineux
+          materials[name].emissive = new THREE.Color(0xffffff);
+          materials[name].emissiveIntensity = 0.3;
+        } else {
+          // Les autres matériaux restent normaux
+          materials[name].emissive = new THREE.Color(0x000000);
+          materials[name].emissiveIntensity = 0;
+        }
+      } else {
+        // Quand le mode sélection n'est pas activé, réinitialisez les matériaux
+        materials[name].emissive = new THREE.Color(0x000000);
+        materials[name].emissiveIntensity = 0;
+      }
+    });
+  });
+  
+
+  const handlePointerOver = (event) => {
+    if (selectMode) {
+      const intersectedObject = event.intersections[0]?.object;
+      if (intersectedObject) {
+        const materialName = intersectedObject.material.name;
+        setHoveredTexture(materialName);
+      }
+    }
+  };
+
+  const handlePointerOut = () => {
+    setHoveredTexture(null);
+  };
+
+  const handleClick = (event) => {
+    if (selectMode) {
+      const intersectedObject = event.intersections[0]?.object;
+      if (intersectedObject) {
+        const materialName = intersectedObject.material.name;
+        setSelectedTexture(materialName);
+      }
+    }
+  };
 
   return (
-    <group {...props} dispose={null} ref={group}>
+
+    <group {...props} dispose={null} ref={group} 
+    onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
+      onClick={handleClick}>
       <primitive object={nodes.Hips} />
       <skinnedMesh
         name="Wolf3D_Body"
