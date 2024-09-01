@@ -4,6 +4,7 @@ import AvatarPage from "./pages/Home";
 import CubePage from "./pages/Cube";
 import ImageSearch from "./pages/SearchImage";
 import Coque from "./pages/Coque"
+import TexturesPage from "./pages/TexturesPage"
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="cube" element={<CubePage />} />
           <Route path="google" element={<ImageSearch />} />
           <Route path="coque" element={<Coque />} />
+          <Route path="textures" element={<TexturesPage />} />
         </Route>
       </Routes>
     </Router>

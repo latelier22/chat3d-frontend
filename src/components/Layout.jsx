@@ -25,6 +25,11 @@ const Layout = () => {
               Coque
             </Link>
           </li>
+          <li>
+            <Link to="/textures" className="hover:underline">
+              Textures
+            </Link>
+          </li>
         </ul>
       </nav>
       <main className="p-4">
